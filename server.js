@@ -6,6 +6,10 @@ var filepath = path.join(__dirname, 'IMG_1534.JPG');
 var jade = require('jade');
 var app = express();
 var CONFIG = require('./config.json');
+var Gpio = require('onofff').Gpio,
+    led = new Gpio(14, 'out'),
+    button = new Gpio(4, 'in', 'both');
+var doorbell = require('./doorbell.js');
 
 app.set('view engine', 'jade');
 app.set('views', path.resolve(__dirname, 'views'));
@@ -13,8 +17,6 @@ app.set('views', path.resolve(__dirname, 'views'));
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
-
 
 app.get('/', function (req, res) {
   res.render('index');
@@ -30,7 +32,7 @@ app.get('/admin', function (req, res) {
 });
 
 app.post('/', function (req, res) {
- 
+
 
   console.log(guest);
   res.render('admin');
@@ -62,7 +64,9 @@ app.post('/message', function (req, res) {
   });
 });
 
-
+button.watch(function() {
+  doorbell.press();
+});
 
 var server = app.listen(3000, function() {
   console.log('Listening to port', server.address().port);

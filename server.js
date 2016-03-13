@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var mailgun = require('mailgun-js')({apiKey: 'key-5cf681c09c48516a8e0b8b00a580969c', domain: 'sandbox08ea930e43c140d699bd4406076fd445.mailgun.org'});
-var filepath = path.join(__dirname, 'IMG_1534.JPG');
+var filepath = path.join(__dirname, 'whosthere.JPG');
 var jade = require('jade');
 var app = express();
 var CONFIG = require('./config.json');
@@ -10,12 +10,7 @@ var Gpio = require('onoff').Gpio,
     led = new Gpio(14, 'out'),
     button = new Gpio(4, 'in', 'both');
 var doorbell = require('./doorbell.js');
-var spawn = require('child_process').spawn;
 
-var cameraSh = spawn('sh', ['camera.sh'], {
-  cwd: undefined,
-  env: process.env
-});
 
 app.set('view engine', 'jade');
 app.set('views', path.resolve(__dirname, 'views'));
@@ -71,8 +66,8 @@ app.post('/message', function (req, res) {
 });
 
 button.watch(
-  doorbell.press,
-  cameraSh
+  
+  doorbell.press
 );
 
 var server = app.listen(3000, function() {

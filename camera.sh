@@ -1,3 +1,3 @@
 #!/bin/bash
 
-fswebcam -r 1280x720 --no-banner whosthere.jpg
+fswebcam -r 600x600 --no-banner whosthere.jpg

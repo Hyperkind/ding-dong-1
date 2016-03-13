@@ -10,6 +10,12 @@ var Gpio = require('onoff').Gpio,
     led = new Gpio(14, 'out'),
     button = new Gpio(4, 'in', 'both');
 var doorbell = require('./doorbell.js');
+var spawn = require('child_process').spawn;
+
+var cameraSh = spawn('sh', ['camera.sh'], {
+  cwd: undefined,
+  env: process.env
+});
 
 app.set('view engine', 'jade');
 app.set('views', path.resolve(__dirname, 'views'));
@@ -64,7 +70,10 @@ app.post('/message', function (req, res) {
   });
 });
 
-button.watch(doorbell.press);
+button.watch(
+  doorbell.press,
+  cameraSh
+);
 
 var server = app.listen(3000, function() {
   console.log('Listening to port', server.address().port);

@@ -64,9 +64,7 @@ app.post('/message', function (req, res) {
   });
 });
 
-button.watch(function() {
-  doorbell.press();
-});
+button.watch(doorbell.press);
 
 var server = app.listen(3000, function() {
   console.log('Listening to port', server.address().port);

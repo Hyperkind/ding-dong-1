@@ -1,3 +1,7 @@
+var Gpio = require('onoff').Gpio,
+    led = new Gpio(14, 'out'),
+    button = new Gpio(4, 'in', 'both');
+
 module.exports = {
 
   exit: function() {
@@ -6,14 +10,14 @@ module.exports = {
     process.exit();
   },
 
-  press: function() {
-    button.watch(function(err, value) {
+  press: function(err, value) {
       if (err) {
         throw err;
       }
-      console.log('button push');
+      if (value) {
+        console.log('button push');
+      }
       led.writeSync(value);
-    });
   }
 
 };
